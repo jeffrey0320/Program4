@@ -7,7 +7,7 @@ public class Depositor {
         SSN = "";
     }
 
-    public Depositor(Name PersonName, String SSN){
+    public Depositor(String SSN, Name PersonName ){
         this.PersonName = PersonName;
         this.SSN = SSN;
     }

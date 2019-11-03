@@ -26,6 +26,14 @@ public class Account {
         this.arrayOfReceipts = arrayOfReceipts;
     }
 
+    public Account(int parseInt, String token, double parseDouble, Depositor acctInfo) {
+        this.accountNumber = parseInt;
+        this.accountType = token;
+        this.accountBalance = parseDouble;
+        this.PersonInfo = acctInfo;
+    }
+
+
     public Depositor getPersonInfo() {
         return PersonInfo;
     }
