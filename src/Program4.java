@@ -12,12 +12,59 @@ public class Program4 {
         boolean notDone = true;
 
         Scanner kybd = new Scanner(System.in);
-
         PrintWriter outputFile = new PrintWriter("myoutput.txt");
 
         readAccts(bankObj);
+        printAccts(bankObj, kybd, outputFile);
 
-        printAccts(bankObj, outputFile);
+        do{
+            menu();
+            choice = kybd.next(".").charAt(0);
+            switch (choice) {
+                case 'q':
+                case 'Q':
+                    notDone = false;
+                    printAccts(bankObj, kybd, outputFile);
+                    break;
+                case 'b':
+                case 'B':
+                    balance(bankObj, kybd, outputFile);
+                    break;
+                case 'i':
+                case 'I':
+                    acctInfo(bankObj, kybd, outputFile);
+                    break;
+                case 'd':
+                case 'D':
+                    deposit(bankObj, kybd, outputFile);
+                    break;
+                case 'w':
+                case 'W':
+                    withdrawal(bankObj, kybd, outputFile);
+                    break;
+                case 'c':
+                case 'C':
+                    clearCheck(bankObj, kybd, outputFile);
+                    break;
+                case 'n':
+                case 'N':
+                    //newAcct(myAcct, Key, output);
+                    break;
+                case 'x':
+                case 'X':
+                    //deleteAcct(myAcct, Key, output);
+                    break;
+                default:
+                    outputFile.println("Error: " + choice + " is an invalid selection -  try again");
+                    outputFile.println();
+                    outputFile.flush();
+                    break;
+            }
+        } while (notDone);
+        kybd.close();
+        outputFile.close();
+        System.out.println();
+        System.out.println("The program is terminating");
     }
 
     public static void readAccts(Bank bankObj) throws FileNotFoundException {
@@ -37,7 +84,7 @@ public class Program4 {
         }
     }
 
-    public static void printAccts(Bank bank, PrintWriter output){
+    public static void printAccts(Bank bank, Scanner key, PrintWriter output){
 
     }
 
@@ -59,23 +106,23 @@ public class Program4 {
         System.out.print("\tEnter your selection: ");
     }
 
-    public static void balance(){
+    public static void balance(Bank bankObj, Scanner kybd, PrintWriter outputFile){
 
     }
 
-    public static void deposit(){
+    public static void deposit(Bank bankObj, Scanner kybd, PrintWriter outputFile){
 
     }
 
-    public static void withdrawal(){
+    public static void withdrawal(Bank bankObj, Scanner kybd, PrintWriter outputFile){
 
     }
 
-    public static void clearCheck(){
+    public static void clearCheck(Bank bankObj, Scanner kybd, PrintWriter outputFile){
 
     }
 
-    public static void acctInfo(){
+    public static void acctInfo(Bank bankObj, Scanner kybd, PrintWriter outputFile){
 
     }
 
