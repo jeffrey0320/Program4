@@ -86,6 +86,28 @@ public class Program4 {
 
     public static void printAccts(Bank bank, Scanner key, PrintWriter output){
 
+        Name clientName;
+        Depositor clientSSName;
+        Account clientInfo;
+
+        output.println("\t\tClients in the Database");
+        output.println();output.printf("%-27s%-9s%-16s%-8s%13s", "Name", "SSN",
+                "Account Number", " Account Type", " Balance");
+        output.println();
+
+        for (int count = 0; count < bank.getNumAccts(); count++) {
+            clientInfo = bank.getAccts(count);
+            clientSSName = clientInfo.getPersonInfo();
+            clientName = clientSSName.getPersonName();
+            output.printf("%-12s", clientName.getFirst());
+            output.printf("%-12s", clientName.getLast());
+            output.printf("%-9s", clientSSName.getSSN());
+
+            output.printf("%13s", clientInfo.getAccountNumber());
+            output.printf("%19s%-3s", clientInfo.getAccountType(), "");
+            output.printf("$%9.2f", clientInfo.getAccountBalance());
+            output.println();
+        }
     }
 
     public static void menu(){

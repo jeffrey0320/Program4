@@ -15,15 +15,15 @@ public class Bank {
         return null;
     }
 
-    public int findAccount(){
+    public int findAcct(){
         return 0;
     }
 
-    public Account getAccount(){
-        return null;
+    public Account getAccts(int index){
+        return arrayOfAccounts.get(index);
     }
 
-    public int getNumAccounts(){
+    public int getNumAccts(){
         return 0;
     }
 
