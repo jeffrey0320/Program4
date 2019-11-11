@@ -1,12 +1,14 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class Program4 {
     public static void main(String[] args) throws FileNotFoundException
     {
         Bank bankObj = new Bank();
+        TransactionTicket transTicket = new TransactionTicket();
 
         char choice;
         boolean notDone = true;
@@ -14,7 +16,7 @@ public class Program4 {
         Scanner kybd = new Scanner(System.in);
         PrintWriter outputFile = new PrintWriter("myoutput.txt");
 
-        readAccts(bankObj);
+        readAccts(bankObj,transTicket);
         printAccts(bankObj, kybd, outputFile);
 
         do{
@@ -28,7 +30,7 @@ public class Program4 {
                     break;
                 case 'b':
                 case 'B':
-                    balance(bankObj, kybd, outputFile);
+                    balance(bankObj, kybd, outputFile,transTicket);
                     break;
                 case 'i':
                 case 'I':
@@ -36,7 +38,7 @@ public class Program4 {
                     break;
                 case 'd':
                 case 'D':
-                    deposit(bankObj, kybd, outputFile);
+                    deposit(bankObj, kybd, outputFile,transTicket);
                     break;
                 case 'w':
                 case 'W':
@@ -48,7 +50,7 @@ public class Program4 {
                     break;
                 case 'n':
                 case 'N':
-                    //newAcct(myAcct, Key, output);
+                    newAccount(bankObj, kybd, outputFile,transTicket);
                     break;
                 case 'x':
                 case 'X':
@@ -67,8 +69,8 @@ public class Program4 {
         System.out.println("The program is terminating");
     }
 
-    public static void readAccts(Bank bankObj) throws FileNotFoundException {
-
+    public static void readAccts(Bank bankObj, TransactionTicket transTicket) throws FileNotFoundException
+    {
         String line;
         File myFile = new File("myinput.txt");
         Scanner cin = new Scanner(myFile);
@@ -80,12 +82,12 @@ public class Program4 {
             Name acctName = new Name(tokens[0],tokens[1]);
             Depositor acctInfo = new Depositor(tokens[2],acctName);
             Account allInfo = new Account(Integer.parseInt(tokens[3]),tokens[4],Double.parseDouble(tokens[5]),acctInfo);
-            //bankObj.openNewAccount(allInfo);
+            bankObj.openNewAccount(transTicket, allInfo);
         }
     }
 
-    public static void printAccts(Bank bank, Scanner key, PrintWriter output){
-
+    public static void printAccts(Bank bank, Scanner key, PrintWriter output)
+    {
         Name clientName;
         Depositor clientSSName;
         Account clientInfo;
@@ -110,7 +112,8 @@ public class Program4 {
         }
     }
 
-    public static void menu(){
+    public static void menu()
+    {
         System.out.println();
         System.out.println("Select one of the following transactions:");
         System.out.println("\t****************************");
@@ -128,43 +131,125 @@ public class Program4 {
         System.out.print("\tEnter your selection: ");
     }
 
-    public static void balance(Bank bankObj, Scanner kybd, PrintWriter outputFile){
+    public static void balance(Bank bankObj, Scanner kybd, PrintWriter outputFile,TransactionTicket ticket)
+    {
+        Account customerAcct = new Account();
+        Calendar currentDate = Calendar.getInstance();
+
+        int requestedAccount;
+        int index;
+        // prompt for account number
+        System.out.print("Enter the account number: ");
+        requestedAccount = kybd.nextInt(); // read-in the account number
+
+        // call findAcct to search if requestedAccount exists
+        index = bankObj.findAcct(requestedAccount);
+
+        ticket = new TransactionTicket(currentDate, "Balance Inquiry");
+        TransactionReceipt receiptBalance = customerAcct.getBalance(ticket, bankObj, customerAcct, index);
+
+        if(receiptBalance.isSuccessIndicatorFlag()){
+            outputFile.println("Transaction Requested: " + receiptBalance.getTicket().getTypeOfTransaction());
+            outputFile.println("Date of Transaction: " + receiptBalance.getTicket().getDateOfTransaction().getTime());
+            outputFile.println("Error: " + receiptBalance.getReasonForFailureString());
+        }else{
+            outputFile.println("Transaction Requested: " + receiptBalance.getTicket().getTypeOfTransaction());
+            outputFile.println("Date of Transaction: " + receiptBalance.getTicket().getDateOfTransaction().getTime());
+            outputFile.println("Account Number: " + requestedAccount);
+            outputFile.printf("Current Balance: $" + receiptBalance.getPostTransactionBalance());
+            outputFile.println();
+        }
 
     }
 
-    public static void deposit(Bank bankObj, Scanner kybd, PrintWriter outputFile){
+    public static void deposit(Bank bankObj, Scanner kybd, PrintWriter outputFile,TransactionTicket ticket)
+    {
+        Account customerAcct = new Account();
+        Calendar currentDate = Calendar.getInstance();
+
+        int requestedAccount;
+        int index;
+        // prompt for account number
+        System.out.print("Enter the account number: ");
+        requestedAccount = kybd.nextInt(); // read-in the account number
+
+        // call findAcct to search if requestedAccount exists
+        index = bankObj.findAcct(requestedAccount);
+
+        ticket = new TransactionTicket(currentDate, "Deposit");
+        TransactionReceipt receiptBalance = customerAcct.getBalance(ticket, bankObj, customerAcct, index);
+
+        if(receiptBalance.isSuccessIndicatorFlag()){
+            outputFile.println("Transaction Requested: " + receiptBalance.getTicket().getTypeOfTransaction());
+            outputFile.println("Date of Transaction: " + receiptBalance.getTicket().getDateOfTransaction().getTime());
+            outputFile.println("Error: " + receiptBalance.getReasonForFailureString());
+        }else{
+            outputFile.println("Transaction Requested: " + receiptBalance.getTicket().getTypeOfTransaction());
+            outputFile.println("Date of Transaction: " + receiptBalance.getTicket().getDateOfTransaction().getTime());
+            outputFile.println("Account Number: " + requestedAccount);
+            outputFile.printf("Current Balance: $" + receiptBalance.getPostTransactionBalance());
+            outputFile.println();
+        }
+    }
+
+    public static void withdrawal(Bank bankObj, Scanner kybd, PrintWriter outputFile)
+    {
 
     }
 
-    public static void withdrawal(Bank bankObj, Scanner kybd, PrintWriter outputFile){
+    public static void clearCheck(Bank bankObj, Scanner kybd, PrintWriter outputFile)
+    {
 
     }
 
-    public static void clearCheck(Bank bankObj, Scanner kybd, PrintWriter outputFile){
+    public static void acctInfo(Bank bankObj, Scanner kybd, PrintWriter outputFile)
+    {
 
     }
 
-    public static void acctInfo(Bank bankObj, Scanner kybd, PrintWriter outputFile){
+    public static void acctInfoHistory()
+    {
 
     }
 
-    public static void acctInfoHistory(){
+    public static void newAccount(Bank bankObj, Scanner kybd, PrintWriter outputFile,TransactionTicket ticket)
+    {
+        Account customerAcct = new Account();
+        Calendar currentDate = Calendar.getInstance();
+
+        int requestedAccount;
+        int index;
+        // prompt for account number
+        System.out.print("Enter the account number: ");
+        requestedAccount = kybd.nextInt(); // read-in the account number
+
+        // call findAcct to search if requestedAccount exists
+        index = bankObj.findAcct(requestedAccount);
+
+        ticket = new TransactionTicket(currentDate, "Balance Inquiry");
+        TransactionReceipt receiptBalance = customerAcct.getBalance(ticket, bankObj, customerAcct, index);
+
+        if(receiptBalance.isSuccessIndicatorFlag()){
+            outputFile.println("Transaction Requested: " + receiptBalance.getTicket().getTypeOfTransaction());
+            outputFile.println("Date of Transaction: " + receiptBalance.getTicket().getDateOfTransaction().getTime());
+            outputFile.println("Error: " + receiptBalance.getReasonForFailureString());
+        }else{
+
+        }
+    }
+
+    public static void closeAccount()
+    {
 
     }
 
-    public static void newAccount(){
+    public static void reopenAccount()
+    {
 
     }
 
-    public static void closeAccount(){
-
-    }
-
-    public static void reopenAccount(){
-
-    }
-
-    public static void deleteAccount(){
+    public static void deleteAccount()
+    {
 
     }
 }

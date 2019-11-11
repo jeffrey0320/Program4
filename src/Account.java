@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Account {
     private Depositor PersonInfo;
@@ -31,6 +32,51 @@ public class Account {
         this.accountType = token;
         this.accountBalance = parseDouble;
         this.PersonInfo = acctInfo;
+    }
+
+    public TransactionReceipt getBalance(TransactionTicket ticketInfo, Bank obj, Account accInfo, int index){
+        TransactionReceipt newRec = new TransactionReceipt();
+
+        if(index == -1) {
+            String reason = "Account not found. ";
+            newRec = new TransactionReceipt(ticketInfo,false,reason);
+            return newRec;
+        }else{
+            accInfo = obj.getAccts(index);
+            double balance = accInfo.getAccountBalance();
+            newRec = new TransactionReceipt(ticketInfo, true, balance);
+            return  newRec;
+        }
+    }
+
+    public TransactionReceipt makeDeposit(TransactionTicket ticketInfo, Bank obj, Account accInfo, int index){
+        TransactionReceipt newRec = new TransactionReceipt();
+
+        if(index == -1) {
+            String reason = "Account not found. ";
+            newRec = new TransactionReceipt(ticketInfo,false,reason);
+            return newRec;
+        }else{
+            accInfo = obj.getAccts(index);
+            double balance = accInfo.getAccountBalance();
+            newRec = new TransactionReceipt(ticketInfo, true, balance);
+            return  newRec;
+        }
+    }
+
+    public TransactionReceipt makeWithdrawl(TransactionTicket ticketInfo, Bank obj, Account accInfo, int index){
+        TransactionReceipt newRec = new TransactionReceipt();
+
+        if(index == -1) {
+            String reason = "Account not found. ";
+            newRec = new TransactionReceipt(ticketInfo,false,reason);
+            return newRec;
+        }else{
+            accInfo = obj.getAccts(index);
+            double balance = accInfo.getAccountBalance();
+            newRec = new TransactionReceipt(ticketInfo, true, balance);
+            return  newRec;
+        }
     }
 
 

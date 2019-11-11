@@ -25,6 +25,19 @@ public class TransactionReceipt {
         this.postTransactionMaturityDate = postTransactionMaturityDate;
     }
 
+    public TransactionReceipt(TransactionTicket ticket, boolean successIndicatorFlag, String reasonForFailureString) {
+        this.ticket = ticket;
+        this.successIndicatorFlag = successIndicatorFlag;
+        this.reasonForFailureString = reasonForFailureString;
+    }
+
+    public TransactionReceipt(TransactionTicket info,boolean flag,double balance) {
+        ticket = info;
+        successIndicatorFlag = flag;
+        preTransactionBalance = balance;
+        postTransactionBalance = balance;
+    }
+
     public TransactionTicket getTicket() {
         return ticket;
     }
