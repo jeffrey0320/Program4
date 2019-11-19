@@ -12,6 +12,11 @@ public class Depositor {
         this.SSN = SSN;
     }
 
+    public Depositor(String s, String f, String l) {
+        SSN = s;
+        PersonName = new Name(f,l);
+    }
+
     public Name getPersonName() {
         return PersonName;
     }

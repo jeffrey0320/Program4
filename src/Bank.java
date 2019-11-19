@@ -7,14 +7,49 @@ public class Bank {
         arrayOfAccounts = new ArrayList<>();
     }
 
-    public TransactionReceipt openNewAccount(TransactionTicket newTicket, Account customerInfo){
-        TransactionReceipt receiptObj = new TransactionReceipt();
+    public void openNewAccount(Account customerInfo){
         arrayOfAccounts.add(customerInfo);
-        return receiptObj;
     }
 
-    public TransactionReceipt deleteAccount(){
-        return null;
+    public TransactionReceipt openNewAccount(TransactionTicket ticket, Bank obj, String[] customerInfo, int acctNum){
+        TransactionReceipt openRec = new TransactionReceipt();
+
+        boolean isEmpty = false;
+        for(int i=0;i<customerInfo.length-1;i++){
+            if(customerInfo[i].isEmpty()) {
+                isEmpty = true;
+                break;
+            }
+        }
+        if(isEmpty){
+            String reason = "Missing information";
+            openRec = new TransactionReceipt(ticket,false,reason);
+            return openRec;
+        }else{
+            Account newAcct = new Account(customerInfo[0],customerInfo[1],customerInfo[2],customerInfo[3],acctNum);
+            arrayOfAccounts.add(newAcct);
+            openRec = new TransactionReceipt(ticket,true,0);
+            return openRec;
+        }
+    }
+
+    public TransactionReceipt deleteAccount(TransactionTicket ticket, Bank bankObj, int index, int delAccount){
+        TransactionReceipt delAcct = new TransactionReceipt();
+        String reason;
+
+        if(bankObj.getAccts(index).getAccountBalance()<0){
+            reason = "Account has a negative balance and cannot be deleted.";
+            delAcct = new TransactionReceipt(ticket,false,reason);
+            return delAcct;
+        }else if(bankObj.getAccts(index).getAccountBalance()>0){
+            reason = "Account has a balance, Withdraw your balance and try again.";
+            delAcct = new TransactionReceipt(ticket,false,reason);
+            return delAcct;
+        }else {
+            arrayOfAccounts.remove(index);
+            delAcct = new TransactionReceipt(ticket,true);
+            return delAcct;
+        }
     }
 
     public int findAcct(int reqAccount){
@@ -29,7 +64,7 @@ public class Bank {
     }
 
     public int getNumAccts(){
-        return 0;
+        return arrayOfAccounts.size();
     }
 
 }
